@@ -422,3 +422,15 @@ ESX.RegisterServerCallback('old_ring:getJobs', function(source, cb)
 
     cb(jobs)
 end)
+
+
+ESX.RegisterServerCallback('old_ring:giveRdv', function(source, cb, data)
+    local xPlayer = ESX.GetPlayerFromId(source)
+    local success, response = exports.ox_inventory:AddItem(source, 'rdv', 1, data)
+    if not success then
+        xPlayer.showNotification("une erreur est survenue")
+        print(json.encode(response))
+        cb(false)
+    end
+    cb(true)
+end)

@@ -187,13 +187,23 @@ function OpenDoorbellMenu(id, doorbell)
 
             local reason = selectedAppointment.reason
 
-            RageUI.Button("~y~Récupérer le rdv", "Afficher le document", {}, true, {
+            RageUI.Button("~y~Consulter le rdv", "Afficher le document", {}, true, {
                 onSelected = function()
                     SetNuiFocus(true, true)
                     SendNUIMessage({
                         action = 'openAppointmentPaper',
                         appointment = selectedAppointment
                     })
+                end
+            })
+
+            RageUI.Button("~p~Récupérer le rdv", "Imprimer le rdv sur un papier", {}, true, {
+                onSelected = function()
+                    ESX.TriggerServerCallback('old_ring:giveRdv', function(try)
+                        if try then
+                            ESX.ShowNotification("~g~RDV récupéré")
+                        end
+                    end, selectedAppointment)
                 end
             })
 
@@ -485,4 +495,15 @@ end)
 RegisterNUICallback('closeUI', function(data, cb)
     SetNuiFocus(false, false)
     cb('ok')
+end)
+
+
+exports('rdv', function(data, slot)
+    exports.ox_inventory:useItem(data, function(data)
+        SetNuiFocus(true, true)
+        SendNUIMessage({
+            action = 'openAppointmentPaper',
+            appointment = data.metadata
+        })
+    end)
 end)

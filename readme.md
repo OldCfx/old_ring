@@ -55,3 +55,18 @@ This resource requires the following:
 * Cooldown-based anti-spam protection
 * Discord logging system
 * `/ringsManager` command restricted to permissions defined in `shared/config.lua`
+
+## 🧳 ox_inventory
+* add item :
+```lua
+['rdv'] = {
+		label = 'Rendez-vous',
+		weight = 20,
+		stack = false,
+		consume = 0,
+		close = true,
+		client = {
+			export = 'old_ring.rdv'
+		}
+	}
+```
